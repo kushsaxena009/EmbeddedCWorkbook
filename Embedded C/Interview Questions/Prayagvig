@@ -1,0 +1,167 @@
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <unistd.h>
+
+/*  Rules
+1) Challenge is open book, you can look up for syntax online
+2) No copy paste code from outside
+3) Timelimit not hardcoded, 3 hours expected time
+4) Write code in proper #def
+5) You are allowed to modify function parameters, return types
+6) You can add extra variables in main
+7) Don't use library functions for solving the questions.
+8) printf() in main will be used for final code checks, don't modify
+9) Question 1 are to check your C skills
+10) Question 2 & 3 are to check your coding style
+11) All the best, Give your best.
+(Kunal Wankhede 7972905586)
+*/
+
+#define LINK_LIST_SIZE 200
+#define True 1
+#define False 0
+#define BITS_IN_UINT32 32
+#define SINGLE_DIGIT_NUMBERS 6
+
+#define QUESTION_1 /* 20 points */
+#define QUESTION_2 /* 50 points */
+#define QUESTION_3 /* 30 points */
+
+#ifdef QUESTION_3
+
+// score_card_of_team()
+// match_result()
+
+#endif
+
+#ifdef QUESTION_2
+
+// find_sum_solution_set()
+
+#endif
+
+#ifdef QUESTION_1
+
+// bit_manipulation()
+// pointer_manipulation()
+
+#endif
+
+int main() {
+
+  srand(time(NULL));
+
+#ifdef QUESTION_1
+  /* Replace the byte at position in packed_data
+   * without modifying the other bytes */
+  printf("\n\n\n\rQuestion 1\n");
+  uint64_t packed_data = (((uint64_t)rand()) << BITS_IN_UINT32) | rand();
+  uint8_t byte = rand();
+  uint8_t position = rand() % sizeof(uint64_t);
+  printf("\n\rpacked_data:0x%016lx, byte:0x%02x, position:%d\n", packed_data,
+         byte, position);
+
+  //
+  // bit_manipulation() or pointer_manipulation()
+
+  printf("\n\rupdated packed_data:0x%016lx", packed_data);
+#endif
+
+#ifdef QUESTION_2
+
+  /* Find the list of single digits from the given array which gives you the sum
+   * equal to the double digit number. and print the solution. Solution may not
+   * exist. */
+
+  printf("\n\n\n\rQuestion 2\n");
+  uint8_t i = 0, solution_found = 0;
+
+  uint8_t single_digits[SINGLE_DIGIT_NUMBERS];
+
+  printf("\n\rSingle digits numbers:");
+  for (i = 0; i < SINGLE_DIGIT_NUMBERS; i++) {
+    single_digits[i] = (rand() % 9) + 1;
+    printf("\t%d", single_digits[i]);
+  }
+
+  uint8_t double_digit = (rand() % 10) + 20;
+  printf("\n\rDouble digit number:\t%d\n", double_digit);
+
+  // find_sum_solution_set();
+
+  if (solution_found) {
+    printf("\n\rPrint your sum solution set here.");
+    // Print sum solution set here
+  } else {
+    printf("\n\rSolution doesn't exist");
+  }
+
+#endif
+
+#ifdef QUESTION_3
+  /* Write a function to find runs scored and also wickets fallen,
+   * for both the teams. Determine who won the match.
+   * 'W'->Wicket, 'd'-> wide ball, '.'-> dot ball, 'n'-> no ball */
+  uint8_t rcb_runs = 0, rcb_wickets = 0;
+  uint8_t gt_runs = 0, gt_wickets = 0;
+  uint8_t match_result[40];
+
+  const uint8_t rcb_ball_by_ball[][20] = {
+      {'.', '.', 'd', 4, '.', 1, '.'},
+      {'.', '.', '.', 1, 1, 2},
+      {'.', 4, 4, 4, '.', 4},
+      {4, 4, 4, 1, '.', 4},
+      {4, 2, 1, 1, 1, 1},
+      {1, '.', 1, 1, 4, 2},
+      {'.', 1, 1, 1, 1, 1},
+      {'W', 1, 1, 6, 4, '.'},
+      {1, 'W', '.', '.', 1, 1},
+      {'d', 2, 'W', 1, 4, 1, 1},
+      {1, '.', '.', 'd', 4, 4, 1},
+      {4, 1, '.', '.', 2, 1},
+      {4, 1, 4, 4, 1, 1},
+      {1, '.', 2, 1, 1, 'W'},
+      {1, 'W', '.', '.', 1, 2},
+      {'d', 1, 4, 1, 1, 4, 1},
+      {1, 1, 1, 1, 2, '.'},
+      {1, 6, 1, 1, 4, 1},
+      {4, 1, 1, 4, 1, 2},
+      {1, 1, 1, 6, 4, 2},
+  };
+
+  const uint8_t gt_ball_by_ball[][20] = {
+      {'d', '.', '.', '.', '.', 1, '.'},
+      {'.', 4, 1, '.', 4, 4},
+      {'.', '.', 2, 4, 4, 'W'},
+      {1, '.', '.', 4, '.', '.'},
+      {2, 1, '.', 1, 1, '.'},
+      {4, 1, 6, 4, 1, '.'},
+      {1, 1, 4, 1, 1, '.'},
+      {1, '.', 'd', 2, 1, 6, 1},
+      {1, '.', 1, 4, 6, 1},
+      {'.', '.', 1, 4, 1, '.'},
+      {1, 1, 4, 1, 4, 1},
+      {2, 1, 1, 2, '.', 1},
+      {2, 2, '.', 6, '.', 6},
+      {1, 1, 1, 1, 4, 1},
+      {'.', 4, 4, 6, 'W', '.'},
+      {'d', 1, '.', 'W', 4, '.', 1},
+      {1, 1, 'd', 1, 2, 2, 1},
+      {6, 1, '.', 'W', 1, 'd', 6},
+      {1, 'd', 6, 1, 2, '.', '.'},
+      {'n', 'd', 6, '.', '.', '.'},
+  };
+
+  printf("\n\n\n\rQuestion 3\n");
+
+  printf("\n\rRCB %d/%d\n", rcb_runs, rcb_wickets);
+  printf("\n\rGT %d/%d\n", gt_runs, gt_wickets);
+
+  printf("\n\rMatch result:\t%s\n", match_result);
+
+#endif
+
+  return 0;
+}
