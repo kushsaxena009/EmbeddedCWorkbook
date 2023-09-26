@@ -1,0 +1,52 @@
+// QUESTION 1
+
+#include <stdio.h>
+#include <stdlib.h>
+#define BITS_IN_UINT32 32
+typedef unsigned long int uint64_t;
+typedef unsigned char uint8_t;
+uint64_t bit_manipulation(uint64_t data,uint8_t val,uint8_t pos)
+{
+    uint64_t buffer[8],data1,data2;
+    uint64_t new_data=0x0,dummy;
+    printf("data  is 0x%016lx\n",data);
+    data1=data&0xFFFFFFFF;
+    data2=data>>0x20;
+    for(int i=0;i<sizeof(data);i++)
+    {
+        if(i>3)
+        {
+            buffer[i]=data2 & (0xFF<<((i-4)*sizeof(data2)));
+            buffer[i]=buffer[i]>>((i-4)*sizeof(data2));
+        }
+        else
+        {
+            buffer[i]=data1 & (0xFF<<(i*sizeof(data1)));
+            buffer[i]=buffer[i]>>(i*sizeof(data1));
+        }
+    }
+    buffer[pos]=val;
+    for(int i=0;i<sizeof(new_data);i++)
+    {
+        new_data = new_data | (buffer[i]<<(i*sizeof(new_data)));
+    }
+    return new_data;
+}
+int main()
+{
+   /* Replace the byte at position in packed_data
+    * without modifying the other bytes */
+  printf("\rQuestion 1\n");
+  uint64_t packed_data = (((uint64_t)rand()) << BITS_IN_UINT32) | rand();
+  uint8_t byte = rand();
+  uint8_t position = rand() % sizeof(uint64_t);
+  printf("\rpacked_data:0x%016lx, byte:0x%02x, position:%d\n", packed_data,
+         byte, position);
+
+  //
+  // bit_manipulation() or pointer_manipulation()
+  packed_data = bit_manipulation(packed_data,byte,position);
+  printf("\n\rupdated packed_data:0x%016lx", packed_data);
+
+    return 0;
+}
