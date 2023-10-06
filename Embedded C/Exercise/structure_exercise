@@ -26,31 +26,45 @@ typedef unsigned long int uint64_t;
 
 typedef struct
 {
- uint8_t crc;
- uint8_t status;
- uint16_t payload;
- uint8_t bat;
- uint8_t sensor;
- uint8_t longAddr;
- uint8_t shortAddr;
- uint8_t addrMode;
+ uint8_t crc           ;
+ uint8_t status        ;
+ uint16_t payload      ;
+ uint8_t bat           ;
+ uint8_t sensor        ;
+ uint8_t longAddr      ;
+ uint8_t shortAddr     ;
+ uint8_t addrMode      ;
 }Packet_t;
+
+typedef struct
+{
+ uint32_t crc           :2;
+ uint32_t status        :1;
+ uint32_t payload       :12;
+ uint32_t bat           :3;
+ uint32_t sensor        :3;
+ uint32_t longAddr      :8;
+ uint32_t shortAddr     :2;
+ uint32_t addrMode      :1;
+}Packet1_t;
+
 
 int main()
 {
     uint32_t value=0X0;
-    Packet_t dataPack,dataPack1;
+    Packet_t dataPack;
+    Packet1_t dataPack1;
     printf("Enter 32 bit value\n");
     scanf("%x",&value);
     printf("Entered 32 bit value is %#X\n",value);
-    dataPack.crc      = (uint8_t)(value & 0x3);
-    dataPack.status   = (uint8_t)(value & 0x4);
-    dataPack.payload  = (uint16_t)(value & 0x7FF8);
-    dataPack.bat      = (uint8_t)(value & 0x38000);
-    dataPack.sensor   = (uint8_t)(value & 0x1C0000);
-    dataPack.longAddr = (uint8_t)(value & 0x1FE00000);
-    dataPack.shortAddr= (uint8_t)(value & 0x60000000);
-    dataPack.addrMode = (uint8_t)(value & 0x80000000);
+    dataPack.crc      = (uint8_t)(value  & 0x00000003);//11
+    dataPack.status   = (uint8_t)((value  & 0x00000008)>>3);//1000
+    dataPack.payload  = (uint16_t)((value & 0x00007FF8)>>3);//111111111111000
+    dataPack.bat      = (uint8_t)((value  & 0x00038000)>>15);//111000000000000000
+    dataPack.sensor   = (uint8_t)((value  & 0x001C0000)>>18);//111000000000000000000
+    dataPack.longAddr = (uint8_t)((value  & 0x1FE00000)>>21);//11111111000000000000000000000
+    dataPack.shortAddr= (uint8_t)((value  & 0x60000000)>>29);//1100000000000000000000000000000
+    dataPack.addrMode = (uint8_t)((value  & 0x80000000)>>31);//10000000000000000000000000000000
     
     
     
@@ -82,6 +96,8 @@ int main()
     printf("longAddr    :%#X\n",dataPack1.longAddr);
     printf("shortAddr   :%#X\n",dataPack1.shortAddr);
     printf("addrMode    :%#X\n",dataPack1.addrMode);
+    printf("Size of structure 1 is : %lu\n",sizeof(dataPack));
+    printf("Size of structure 2 is : %lu\n",sizeof(dataPack1));
     
     return 0;
 }
