@@ -48,14 +48,32 @@ typedef struct
  uint32_t addrMode      :1;
 }Packet1_t;
 
+typedef union
+{
+    uint32_t PacketValue;
+    struct{
+         uint32_t crc           :2;
+         uint32_t status        :1;
+         uint32_t payload       :12;
+         uint32_t bat           :3;
+         uint32_t sensor        :3;
+         uint32_t longAddr      :8;
+         uint32_t shortAddr     :2;
+         uint32_t addrMode      :1;
+    }packet;
+ 
+}U_Packet_t;
+
 
 int main()
 {
     uint32_t value=0X0;
     Packet_t dataPack;
     Packet1_t dataPack1;
+    U_Packet_t data;
     printf("Enter 32 bit value\n");
     scanf("%x",&value);
+    data.PacketValue=value;
     printf("Entered 32 bit value is %#X\n",value);
     dataPack.crc      = (uint8_t)(value  & 0x00000003);//11
     dataPack.status   = (uint8_t)((value  & 0x00000008)>>3);//1000
@@ -77,7 +95,7 @@ int main()
     dataPack1.shortAddr= (uint8_t)((value >> 29) & 0X3);
     dataPack1.addrMode = (uint8_t)((value >> 31) & 0X1);
     
-    printf("Format 1\n");
+    printf("\nFormat 1 using anding then bitwise shifting\n");
     printf("crc         :%#X\n",dataPack.crc);
     printf("status      :%#X\n",dataPack.status);
     printf("payload     :%#X\n",dataPack.payload);
@@ -87,7 +105,7 @@ int main()
     printf("shortAddr   :%#X\n",dataPack.shortAddr);
     printf("addrMode    :%#X\n",dataPack.addrMode);
     
-    printf("Format 2\n");
+    printf("\nFormat 2 using bitwise shifting then anding\n");
     printf("crc         :%#X\n",dataPack1.crc);
     printf("status      :%#X\n",dataPack1.status);
     printf("payload     :%#X\n",dataPack1.payload);
@@ -96,8 +114,19 @@ int main()
     printf("longAddr    :%#X\n",dataPack1.longAddr);
     printf("shortAddr   :%#X\n",dataPack1.shortAddr);
     printf("addrMode    :%#X\n",dataPack1.addrMode);
+    
+    printf("\nFormat 3 using Union method of bit extraction\n");
+    printf("crc         :%#X\n",data.packet.crc);
+    printf("status      :%#X\n",data.packet.status);
+    printf("payload     :%#X\n",data.packet.payload);
+    printf("bat         :%#X\n",data.packet.bat);
+    printf("sensor      :%#X\n",data.packet.sensor);
+    printf("longAddr    :%#X\n",data.packet.longAddr);
+    printf("shortAddr   :%#X\n",data.packet.shortAddr);
+    printf("addrMode    :%#X\n",data.packet.addrMode);    
     printf("Size of structure 1 is : %lu\n",sizeof(dataPack));
     printf("Size of structure 2 is : %lu\n",sizeof(dataPack1));
-    
+    printf("Size of union 1 is : %lu\n",sizeof(data));
+
     return 0;
 }
