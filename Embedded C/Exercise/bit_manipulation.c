@@ -10,6 +10,7 @@ void clear_particularBit(int num,int bit);
 void check_particularBit(int num,int bit);
 void toggle_particularBit(int num,int bit);
 void reverse_bits(int num);
+void count_set_bits(int num);
 
 int main()
 {
@@ -35,6 +36,7 @@ void menu(void)
     printf("\tEnter 6 to check particular bit of any number is set or clear \n");
     printf("\tEnter 7 to toggle particular bit of any number \n");
     printf("\tEnter 8 to reverse bits of any number \n");
+    printf("\tEnter 9 to count set bits of any number \n");
     printf("*************************************************\n");
     scanf("%d",&opt);
     switch(opt)
@@ -82,6 +84,11 @@ void menu(void)
         printf("Enter number to reverse it's bits\n");
         scanf("%d",&val1);
         reverse_bits(val1);
+        break;
+        case 9 :
+        printf("Enter number to count it's set bits\n");
+        scanf("%d",&val1);
+        count_set_bits(val1);
         break;
         default:
         printf("Please enter valid option \n");
@@ -193,4 +200,18 @@ void reverse_bits(int num)
     }
     
     printf("After reverse bits number is 0X%x\n",reverse_num);
+}
+
+void count_set_bits(int num)
+{
+    int count_num=num,bit_check,s_bit=0;
+    bit_check = (sizeof(num)*8);
+    for(int i = 0; i< bit_check ; i++)
+    {
+        if(num & 1)
+        s_bit++;
+        num >>= 1;
+    }
+    
+    printf("Number of set bits in number  0X%x : %d\n",count_num,s_bit);
 }
