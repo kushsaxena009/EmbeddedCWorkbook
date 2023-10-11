@@ -132,18 +132,22 @@ void display_all_records(STUDENT_INFO_t *record, int8_t max_record)
     if(record[0].rollNumber==0)
     {
         printf("No records found\n");
-        // break;
-        // return 0;
     }
     else
     {
+        
         for(int i=0;i<max_record;i++)
         {
-            printf("Student rollnumber is    : %d\n",record[i].rollNumber);
-            printf("Student name is          : %s\n",record[i].name);
-            printf("Student branch is        : %s\n",record[i].branch);
-            printf("Student date of birth is : %d\n",record[i].dob);
-            printf("Student semister is      : %d\n",record[i].semister);
+            if(record[i].rollNumber!=0)
+            {
+                printf("Student %d rollnumber is    : %u\n",i,record[i].rollNumber);
+                printf("Student %d name is          : %s\n",i,record[i].name);
+                printf("Student %d branch is        : %s\n",i,record[i].branch);
+                printf("Student %d date of birth is : %u\n",i,record[i].dob);
+                printf("Student %d semister is      : %u\n",i,record[i].semister);
+                printf("***********\n");
+            }
+            
         }
     }
 }
@@ -175,6 +179,7 @@ int check_roll_number(int roll_number, STUDENT_INFO_t *record, int8_t max_record
 int add_new_record(STUDENT_INFO_t *record, int8_t max_record)
 {
     int new_node=0;
+    char dummy[100], dummy1[50];
     if(record[9].rollNumber!=0)
     {
         printf("No space available\n");
@@ -199,9 +204,13 @@ int add_new_record(STUDENT_INFO_t *record, int8_t max_record)
         }
     }
     printf("Enter student name               : ");
-    scanf("%s",record[new_node].name);
+    scanf("%s",dummy);
+    strcpy(record[new_node].name, dummy);
+    // record[new_node].name = &dummy;
     printf("Enter student branch             : ");
-    scanf("%s",record[new_node].branch);
+    scanf("%s",dummy1);
+    strcpy(record[new_node].branch, dummy1);
+    // record[new_node].branch = &dummy1;
     printf("Enter student date of birth      : ");
     scanf("%d",&record[new_node].dob);
     printf("Enter student semister           : ");
@@ -223,6 +232,8 @@ int add_new_record(STUDENT_INFO_t *record, int8_t max_record)
 int delete_record(STUDENT_INFO_t *record, int8_t max_record)
 {
     int dRollnumber,dNode = -1;
+    char dname ='0';
+    char dbranch ='0';
     printf("Enter student rollnumber : ");
     scanf("%d",&dRollnumber);
     for(int i=0;i<max_record;i++)
@@ -230,6 +241,11 @@ int delete_record(STUDENT_INFO_t *record, int8_t max_record)
         if(record[i].rollNumber == dRollnumber)
         {
             dNode = i;
+            record[i].rollNumber=0;
+            strcpy(record[i].name, &dname);
+            strcpy(record[i].branch, &dbranch);
+            record[i].dob=0;
+            record[i].semister=0;
         }
     }
     if(dNode == -1)
