@@ -7,6 +7,9 @@ void check_opposite_signs(int a,int b);
 void check_powerOftwo(int num);
 void set_particularBit(int num,int bit);
 void clear_particularBit(int num,int bit);
+void check_particularBit(int num,int bit);
+void toggle_particularBit(int num,int bit);
+void reverse_bits(int num);
 
 int main()
 {
@@ -29,6 +32,9 @@ void menu(void)
     printf("\tEnter 3 to check power of two \n");
     printf("\tEnter 4 to set bit of any number \n");
     printf("\tEnter 5 to clear bit of any number \n");
+    printf("\tEnter 6 to check particular bit of any number is set or clear \n");
+    printf("\tEnter 7 to toggle particular bit of any number \n");
+    printf("\tEnter 8 to reverse bits of any number \n");
     printf("*************************************************\n");
     scanf("%d",&opt);
     switch(opt)
@@ -61,6 +67,21 @@ void menu(void)
         printf("Enter number to clear particular bit and also enter set bit\n");
         scanf("%d %d",&val1, &val2);
         clear_particularBit(val1,val2);
+        break;
+        case 6 :
+        printf("Enter number to check particular bit set or clear and also enter desired bit\n");
+        scanf("%d %d",&val1, &val2);
+        check_particularBit(val1,val2);
+        break;
+        case 7 :
+        printf("Enter number to toggle particular bit\n");
+        scanf("%d %d",&val1, &val2);
+        toggle_particularBit(val1,val2);
+        break;
+        case 8 :
+        printf("Enter number to reverse it's bits\n");
+        scanf("%d",&val1);
+        reverse_bits(val1);
         break;
         default:
         printf("Please enter valid option \n");
@@ -128,4 +149,39 @@ void clear_particularBit(int num,int bit)
         num&= ~(1<<bit);
         printf("Number after bit clear is 0X%X\n",num);
     }
+}
+
+void check_particularBit(int num,int bit)
+{
+    int bit_check,res=0;
+    bit_check = (sizeof(num)*8);
+    if((bit >= bit_check) || (bit<0))
+    {
+        printf("Please enter valid bit size which is in range from 0 to %d\n",(bit_check-1));
+    }
+    else
+    {
+        res = ((num>>bit) & 1);
+        (res==1) ? (printf("Particular bit of 0X%x is set\n",num)) : (printf("Particular bit of 0X%x is clear\n",num)) ;
+    }
+}
+
+void toggle_particularBit(int num,int bit)
+{
+    int bit_check,res=0;
+    bit_check = (sizeof(num)*8);
+    if((bit >= bit_check) || (bit<0))
+    {
+        printf("Please enter valid bit size which is in range from 0 to %d\n",(bit_check-1));
+    }
+    else
+    {
+        num^= 1<<bit;
+        printf("After toggle number is 0X%x\n",num);
+    }
+}
+
+void reverse_bits(int num)
+{
+    printf("After reverse bits number is 0X%x\n",(num^0xFFFF));
 }
