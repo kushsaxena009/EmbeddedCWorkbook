@@ -183,5 +183,14 @@ void toggle_particularBit(int num,int bit)
 
 void reverse_bits(int num)
 {
-    printf("After reverse bits number is 0X%x\n",(num^0xFFFF));
+    int reverse_num=0,bit_check,s_bit;
+    bit_check = (sizeof(num)*8);
+    for(int i = 0; i< bit_check ; i++)
+    {
+        s_bit = (num & 1);
+        num = (num>>1);
+        reverse_num = (reverse_num<<1)+s_bit;
+    }
+    
+    printf("After reverse bits number is 0X%x\n",reverse_num);
 }
