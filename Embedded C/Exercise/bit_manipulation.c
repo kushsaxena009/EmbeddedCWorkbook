@@ -1,6 +1,22 @@
 #include <stdio.h>
 
+#define CHAR_BITS  8  // size of character
+#define INT_BITS  ( sizeof(int) * CHAR_BITS) //bits in integer
+
+// Use to print the data in binary format
+void PrintInBinary(unsigned n)
+{
+	short int iPos;
+	
+	for (iPos = (INT_BITS -1) ; iPos >= 0 ; iPos--)
+	{
+	  (n & (1 << iPos))? printf("1"): printf("0");	
+	}
+	printf("\n");	
+}
+
 int flag = 99;
+
 void menu(void);
 void compute_sign(int num);
 void check_opposite_signs(int a,int b);
@@ -11,6 +27,9 @@ void check_particularBit(int num,int bit);
 void toggle_particularBit(int num,int bit);
 void reverse_bits(int num);
 void count_set_bits(int num);
+void left_rotate_bits(int num, unsigned int bit);
+void right_rotate_bits(int num, unsigned int bit);
+void compute_min_max(int a,int b);
 
 int main()
 {
@@ -27,16 +46,19 @@ void menu(void)
 {
     int val1, val2, opt = 0;
     printf("*************************************************\n");
-    printf("\tEnter 0 to exit application \n");
-    printf("\tEnter 1 to check signed of number \n");
-    printf("\tEnter 2 to check polarity of two numbers \n");
-    printf("\tEnter 3 to check power of two \n");
-    printf("\tEnter 4 to set bit of any number \n");
-    printf("\tEnter 5 to clear bit of any number \n");
-    printf("\tEnter 6 to check particular bit of any number is set or clear \n");
-    printf("\tEnter 7 to toggle particular bit of any number \n");
-    printf("\tEnter 8 to reverse bits of any number \n");
-    printf("\tEnter 9 to count set bits of any number \n");
+    printf("\tEnter  0 to exit application \n");
+    printf("\tEnter  1 to check signed of number \n");
+    printf("\tEnter  2 to check polarity of two numbers \n");
+    printf("\tEnter  3 to check power of two \n");
+    printf("\tEnter  4 to set bit of any number \n");
+    printf("\tEnter  5 to clear bit of any number \n");
+    printf("\tEnter  6 to check particular bit of any number is set or clear \n");
+    printf("\tEnter  7 to toggle particular bit of any number \n");
+    printf("\tEnter  8 to reverse bits of any number \n");
+    printf("\tEnter  9 to count set bits of any number \n");
+    printf("\tEnter 10 to rotate bits left \n");
+    printf("\tEnter 11 to rotate bits right \n");
+    printf("\tEnter 12 to find min and max of 2 numbers \n");
     printf("*************************************************\n");
     scanf("%d",&opt);
     switch(opt)
@@ -89,6 +111,19 @@ void menu(void)
         printf("Enter number to count it's set bits\n");
         scanf("%d",&val1);
         count_set_bits(val1);
+        case 10 :
+        printf("Enter number to rotate with how much bits to rotate left\n");
+        scanf("%d %d",&val1,&val2);
+        left_rotate_bits(val1,val2);
+        case 11 :
+        printf("Enter number to rotate with how much bits to rotate right\n");
+        scanf("%d %d",&val1,&val2);
+        right_rotate_bits(val1,val2);
+        break;
+        case 12 :
+        printf("Enter two numbers to find minimum and maximum\n");
+        scanf("%d %d",&val1,&val2);
+        compute_min_max(val1,val2);
         break;
         default:
         printf("Please enter valid option \n");
@@ -190,22 +225,28 @@ void toggle_particularBit(int num,int bit)
 
 void reverse_bits(int num)
 {
-    int reverse_num=0,bit_check,s_bit;
-    bit_check = (sizeof(num)*8);
-    for(int i = 0; i< bit_check ; i++)
+    unsigned int iLoop = 0;
+    unsigned int tmp = 0;         //  Assign num to the tmp
+    int iNumberLopp = INT_BITS;
+    printf("Number entered in binary is\n");
+    PrintInBinary(num);
+    for(; iLoop < iNumberLopp; ++iLoop)
     {
-        s_bit = (num & 1);
-        num = (num>>1);
-        reverse_num = (reverse_num<<1)+s_bit;
+        if((num & (1 << iLoop))) // check set bits of num
+        {
+            tmp |= 1 << ((INT_BITS - 1) - iLoop); //putting the set bits of num in tmp
+        }
     }
-    
-    printf("After reverse bits number is 0X%x\n",reverse_num);
+    printf("After reverse bits number is 0X%x\n",tmp);
+    PrintInBinary(tmp);
 }
 
 void count_set_bits(int num)
 {
     int count_num=num,bit_check,s_bit=0;
     bit_check = (sizeof(num)*8);
+    printf("Number in Binary formt\n");
+    PrintInBinary(num);
     for(int i = 0; i< bit_check ; i++)
     {
         if(num & 1)
@@ -214,4 +255,56 @@ void count_set_bits(int num)
     }
     
     printf("Number of set bits in number  0X%x : %d\n",count_num,s_bit);
+}
+
+void left_rotate_bits(int num, unsigned int bit)
+{
+    int count_num=num,bit_check,s_bit=0;
+    bit_check = (sizeof(num)*8);
+    printf("Number in Binary formt\n");
+    PrintInBinary(num);
+    if(bit>INT_BITS)
+    {
+        printf("Please enter valid range between 0 to INT_BITS\n");
+    }
+    else
+    {
+       count_num = ((num<<bit) | (num>> (INT_BITS-bit))); 
+    }
+    
+    printf("Number after left rotate is  0X%x :\n",count_num);
+    printf("Number in Binary formt\n");
+    PrintInBinary(count_num);
+}
+
+void right_rotate_bits(int num, unsigned int bit)
+{
+    int count_num=num,bit_check,s_bit=0;
+    bit_check = (sizeof(num)*8);
+    printf("Number in Binary formt\n");
+    PrintInBinary(num);
+    if(bit>INT_BITS)
+    {
+        printf("Please enter valid range between 0 to INT_BITS\n");
+    }
+    else
+    {
+       count_num = ((num>>bit) | (num<< (INT_BITS-bit))); 
+    }
+    
+    printf("Number after right rotate is  0X%x :\n",count_num);
+    printf("Number in Binary formt\n");
+    PrintInBinary(count_num);
+}
+
+void compute_min_max(int a,int b)
+{
+    int min_res, max_res;
+    printf("Number in Binary formt\n");
+    PrintInBinary(a);
+    PrintInBinary(b);
+    min_res = (b ^ ((a ^ b) & -(a < b))); // min(a, b)
+    max_res = (a ^ ((a ^ b) & -(a < b))); // max(a, b)
+    printf("Minimum number is %d\n",min_res);
+    printf("Maximum number is %d\n",max_res);
 }
