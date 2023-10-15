@@ -30,6 +30,9 @@ void count_set_bits(int num);
 void left_rotate_bits(int num, unsigned int bit);
 void right_rotate_bits(int num, unsigned int bit);
 void compute_min_max(int a,int b);
+void swap_numbers(int num1, int num2);
+void clear_bits_from_MSB(int num1, int bit);
+void clear_bits_from_LSB(int num1, int bit);
 
 int main()
 {
@@ -59,6 +62,9 @@ void menu(void)
     printf("\tEnter 10 to rotate bits left \n");
     printf("\tEnter 11 to rotate bits right \n");
     printf("\tEnter 12 to find min and max of 2 numbers \n");
+    printf("\tEnter 13 to swap 2 numbers \n");
+    printf("\tEnter 14 to clear bits from MSB \n");
+    printf("\tEnter 15 to clear bits from LSB \n");
     printf("*************************************************\n");
     scanf("%d",&opt);
     switch(opt)
@@ -124,6 +130,21 @@ void menu(void)
         printf("Enter two numbers to find minimum and maximum\n");
         scanf("%d %d",&val1,&val2);
         compute_min_max(val1,val2);
+        break;
+        case 13 :
+        printf("Enter two numbers to swap\n");
+        scanf("%d %d",&val1,&val2);
+        swap_numbers(val1,val2);
+        break;
+        case 14 :
+        printf("Enter number and bit position to clear from MSB\n");
+        scanf("%d %d",&val1,&val2);
+        clear_bits_from_MSB(val1,val2);
+        break;
+        case 15 :
+        printf("Enter number and bit position to clear from LSB\n");
+        scanf("%d %d",&val1,&val2);
+        clear_bits_from_LSB(val1,val2);
         break;
         default:
         printf("Please enter valid option \n");
@@ -307,4 +328,52 @@ void compute_min_max(int a,int b)
     max_res = (a ^ ((a ^ b) & -(a < b))); // max(a, b)
     printf("Minimum number is %d\n",min_res);
     printf("Maximum number is %d\n",max_res);
+}
+
+void swap_numbers(int num1, int num2)
+{
+    printf("Numbers before swap are \t%d\t%d\n",num1,num2);
+    num1 = num1 ^ num2;
+    num2 = num1 ^ num2;
+    num1 = num1 ^ num2;
+    // num1 = num1 + num2;
+    // num2 = num1 - num2;
+    // num1 = num1 - num2;
+    printf("Numbers after swap are  \t%d\t%d\n",num1,num2);
+}
+
+void clear_bits_from_MSB(int num1, int bit)
+{
+    int mask = 0;
+    printf("Number in binary format\n");
+    PrintInBinary(num1);
+    if(bit>INT_BITS)
+    {
+        printf("Please enter valid range between 0 to INT_BITS\n");
+    }
+    else
+    {
+        mask = (1<<(bit))-1;
+        num1 = num1 & mask;
+    }
+    printf("Numbers after clear bits  \t%d\n",num1);
+    PrintInBinary(num1);
+}
+
+void clear_bits_from_LSB(int num1, int bit)
+{
+    int mask = 0;
+    printf("Number in binary format\n");
+    PrintInBinary(num1);
+    if(bit>INT_BITS)
+    {
+        printf("Please enter valid range between 0 to INT_BITS\n");
+    }
+    else
+    {
+        mask = (1<<(bit))-1;
+        num1 = num1 & ~mask;
+    }
+    printf("Numbers after clear bits  \t%d\n",num1);
+    PrintInBinary(num1);
 }
